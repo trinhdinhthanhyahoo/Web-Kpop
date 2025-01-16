@@ -258,7 +258,7 @@
 
 .social-icon:hover {
   color: var(--primary-color);
-  transform: translateY(-3px);
+  transform: translateY(-3px) rotate(15deg);
 }
 
 /* Responsive Styles */

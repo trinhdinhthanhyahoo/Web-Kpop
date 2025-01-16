@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     initNavigation();
     initGallery();
+    initScrollReveal();
 });
 
 // Xử lý scroll và hiệu ứng menu
@@ -61,25 +62,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const songs = {
         'drama': {
             title: 'Drama',
-            src: 'src/assets/music/Exitsign.mp3',
-            thumbnail: 'src/assets/images/music-img/drama.jpg'
+            src: 'src/assets/music/drama.mp3',
+            thumbnail: 'src/assets/music/drama.jpg'
         },
-        'myworld': {
-            title: 'Spicy',
-            src: 'src/assets/music/Exitsign.mp3',
-            thumbnail: 'src/assets/images/music-img/drama.jpg'
+        'savage': {
+            title: 'Savage',
+            src: 'src/assets/music/savage.mp3',
+            thumbnail: 'src/assets/music/savage.jpg'
 
         },
         'girls': {
             title: 'Girls',
-            src: 'src/assets/music/Exitsign.mp3',
-            thumbnail: 'src/assets/images/music-img/drama.jpg'
+            src: 'src/assets/music/girls.mp3',
+            thumbnail: 'src/assets/music/girl.jpg'
 
         },
-        'savage': {
-            title: 'Savage',
-            src: 'src/assets/music/Exitsign.mp3',
-            thumbnail: 'src/assets/images/music-img/drama.jpg'
+        'wiplash': {
+            title: 'Wiplash',
+            src: 'src/assets/music/whiplash.mp3',
+            thumbnail: 'src/assets/music/whiplash.jpg'
 
         }
     };
@@ -110,4 +111,56 @@ document.addEventListener('DOMContentLoaded', function () {
             musicPlayer.classList.add('hidden');
         }, 300);
     });
-}); 
+});
+
+// Thêm hàm reveal elements
+function initScrollReveal() {
+    const sections = document.querySelectorAll('section');
+    const memberCards = document.querySelectorAll('.member-card');
+    const albumCards = document.querySelectorAll('.album-card');
+
+    const revealElement = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal');
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const options = {
+        threshold: 0.15,
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver(revealElement, options);
+
+    sections.forEach(section => {
+        section.classList.add('reveal-section');
+        observer.observe(section);
+    });
+
+    // Xử lý cards theo vị trí trong grid
+    memberCards.forEach((card, index) => {
+        card.classList.add('reveal-card');
+        // Với grid 4 cột, index 0,1 sẽ từ trái, 2,3 sẽ từ phải
+        if (index % 4 < 2) {
+            card.classList.add('reveal-left');
+        } else {
+            card.classList.add('reveal-right');
+        }
+        card.style.transitionDelay = `${(index % 2) * 0.1}s`;
+        observer.observe(card);
+    });
+
+    albumCards.forEach((card, index) => {
+        card.classList.add('reveal-card');
+        if (index % 4 < 2) {
+            card.classList.add('reveal-left');
+        } else {
+            card.classList.add('reveal-right');
+        }
+        card.style.transitionDelay = `${(index % 2) * 0.1}s`;
+        observer.observe(card);
+    });
+} 
